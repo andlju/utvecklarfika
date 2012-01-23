@@ -16,9 +16,22 @@
         };
     }
 
+    function VotingViewModel() {
+        var self = this;
+
+        self.subjectList = ko.observableArray([]);
+
+        self.newSubject = ko.observable();
+
+        self.addSubject = function () {
+            var subj = new SubjectViewModel(self.newSubject(), 1);
+            self.subjectList.push(subj);
+            self.newSubject('');
+        };
+    }
 
     $(function () {
-        var viewModel = new SubjectViewModel('Knockout.js', 1);
+        var viewModel = new VotingViewModel();
         ko.applyBindings(viewModel);
     });
 </script>
@@ -42,28 +55,18 @@
             <th>Röster</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody data-bind="foreach: subjectList">
         <tr>
             <td data-bind="text: subject"></td>
             <td data-bind="text: votes"></td>
             <td><button data-bind="click: addToVote" class="btn">Rösta!</button></td>
         </tr>
-        <tr>
-            <td>Nuget</td>
-            <td>2</td>
-            <td><button class="btn">Rösta!</button></td>
-        </tr>
-        <tr>
-            <td>Nancy</td>
-            <td>1</td>
-            <td><button class="btn">Rösta!</button></td>
-        </tr>
     </tbody>
     <tbody>
         <tr>
             <td>
-                <form>
-                    <input type="text" name="subject"/>
+                <form data-bind="submit: addSubject">
+                    <input type="text" data-bind="value: newSubject" name="subject"/>
                     <input type="submit" class="btn primary" value="Lägg till"/>
                 </form>
             </td>
