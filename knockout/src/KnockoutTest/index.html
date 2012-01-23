@@ -2,7 +2,26 @@
 
 
 @Section['Scripts']
+<script type="text/javascript">
+    
+    function SubjectViewModel(subject, votes) {
+        var self = this;
 
+        self.subject = ko.observable(subject);
+        self.votes = ko.observable(votes);
+
+        self.addToVote = function () {
+            var v = self.votes();
+            self.votes(v + 1);
+        };
+    }
+
+
+    $(function () {
+        var viewModel = new SubjectViewModel('Knockout.js', 1);
+        ko.applyBindings(viewModel);
+    });
+</script>
 @EndSection
 
 @Section['Header']
@@ -25,9 +44,9 @@
     </thead>
     <tbody>
         <tr>
-            <td>Knockout.js</td>
-            <td>3</td>
-            <td><button class="btn">Rösta!</button></td>
+            <td data-bind="text: subject"></td>
+            <td data-bind="text: votes"></td>
+            <td><button data-bind="click: addToVote" class="btn">Rösta!</button></td>
         </tr>
         <tr>
             <td>Nuget</td>
